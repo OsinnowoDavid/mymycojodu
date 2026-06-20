@@ -1,0 +1,188 @@
+import React, { useEffect, useRef, useState } from 'react';
+
+interface LocationSectionProps {
+  className?: string;
+  address?: string;
+  addressLabel?: string;
+  buttonText?: string;
+  onButtonClick?: () => void;
+  mapUrl?: string;
+  showMap?: boolean;
+}
+
+const LocationSection: React.FC<LocationSectionProps> = ({
+  className = '',
+  address = "12, Adebowale Street Ojodu Berger, Lagos State",
+  addressLabel = "Our Church Address",
+  buttonText = "Join us",
+  onButtonClick,
+  mapUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.9524122603607!2d3.375295414770757!3d6.527375295278651!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b2ae68280c1%3A0xdc9e87a367d8c4e2!2sOjodu%20Berger%2C%20Lagos!5e0!3m2!1sen!2sng!4v1647600000000!5m2!1sen!2sng",
+  showMap = true
+}) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
+  const handleButtonClick = () => {
+    if (onButtonClick) {
+      onButtonClick();
+    } else {
+      // Open Google Maps with the address
+      const encodedAddress = encodeURIComponent(address);
+      window.open(`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`, '_blank');
+    }
+  };
+
+  const handleDirectionsClick = () => {
+    const encodedAddress = encodeURIComponent(address);
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`, '_blank');
+  };
+
+  return (
+    <section 
+      ref={sectionRef}
+      className={`w-full px-4 sm:px-6 md:px-8 lg:px-20 py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden ${className}`}
+    >
+      {/* Background decoration */}
+      <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#CB3398]/5 rounded-full blur-3xl animate-pulse-slow" />
+      <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#CB3398]/5 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '2s' }} />
+
+      <div className="max-w-[1277px] mx-auto relative z-10">
+        {/* Header */}
+        <div className={`flex flex-col gap-5 mb-10 sm:mb-12 md:mb-16 transition-all duration-1000 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}>
+          <h2 className="text-4xl sm:text-5xl lg:text-[60px] font-medium leading-[120%] text-[#1E1E1E] relative inline-block">
+            Where we are located
+            <span className="absolute -bottom-2 left-0 w-20 h-1 bg-[#CB3398] rounded-full" />
+          </h2>
+          <p className="text-xl sm:text-2xl lg:text-[32px] font-medium leading-[120%] text-[#1E1E1E] opacity-80">
+            Lorem ipsum dolor sit amet consectetur. Integer viverra diam mi pellentesque tincidunt eget sed cras.
+          </p>
+        </div>
+
+        {/* Location Card */}
+        <div className={`relative rounded-3xl overflow-hidden transition-all duration-1000 delay-300 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}>
+          {/* Background Image with Map Toggle */}
+          <div 
+            className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[709px] bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(/mfm ojodu.png)',
+            }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+            {/* Map Overlay (Optional) */}
+            {showMap && isHovered && (
+              <div className="absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity duration-500">
+                <div className="bg-white rounded-2xl p-4 max-w-[90%] w-[600px]">
+                  <div className="flex justify-between items-center mb-3">
+                    <h4 className="text-[#1E1E1E] font-medium">Find us on Google Maps</h4>
+                    <button 
+                      onClick={handleDirectionsClick}
+                      className="text-[#CB3398] text-sm font-medium hover:underline"
+                    >
+                      Get Directions
+                    </button>
+                  </div>
+                  <div className="relative w-full h-[200px] sm:h-[250px] rounded-xl overflow-hidden">
+                    <iframe
+                      src={mapUrl}
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="Church Location Map"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Location Badge */}
+            <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
+              <span className="text-[#1E1E1E] text-sm font-medium flex items-center gap-2">
+                <svg className="w-4 h-4 text-[#CB3398]" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                </svg>
+                Visit Us
+              </span>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="absolute bottom-0 left-0 right-0 bg-[#CB3398] px-4 sm:px-6 py-4 sm:py-5">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 max-w-[1212px] mx-auto">
+              {/* Address Info */}
+              <div className="flex flex-col justify-center gap-1 w-full sm:w-auto">
+                <p className="text-white/80 text-xs sm:text-sm font-medium uppercase tracking-wider">
+                  {addressLabel}
+                </p>
+                <p className="text-white text-base sm:text-lg md:text-xl lg:text-[23px] font-medium leading-[120%]">
+                  {address}
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+                {/* Directions Button */}
+                <button
+                  onClick={handleDirectionsClick}
+                  className="w-full sm:w-auto px-6 py-2 bg-white/20 text-white rounded-xl text-sm font-medium hover:bg-white/30 transition-all duration-300 flex items-center justify-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                  </svg>
+                  Get Directions
+                </button>
+
+                {/* Join Us Button */}
+                <button
+                  onClick={handleButtonClick}
+                  className="w-full sm:w-auto px-8 sm:px-12 py-3 sm:py-4 bg-white text-[#CB3398] rounded-2xl font-medium text-base sm:text-lg lg:text-[19px] transition-all duration-300 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#CB3398] whitespace-nowrap flex items-center justify-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                  {buttonText}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default LocationSection;
