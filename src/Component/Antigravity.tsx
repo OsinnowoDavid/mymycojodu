@@ -1,3 +1,4 @@
+// @ts-nocheck - Remove this once @types/three is installed
 /* eslint-disable react/no-unknown-property */
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
@@ -21,7 +22,25 @@ interface AntigravityProps {
   fieldStrength?: number;
 }
 
-const AntigravityInner = ({
+interface Particle {
+  t: number;
+  speed: number;
+  xFactor: number;
+  yFactor: number;
+  zFactor: number;
+  mx: number;
+  my: number;
+  mz: number;
+  cx: number;
+  cy: number;
+  cz: number;
+  vx: number;
+  vy: number;
+  vz: number;
+  randomRadiusOffset: number;
+}
+
+const AntigravityInner: React.FC<AntigravityProps> = ({
   count = 300,
   magnetRadius = 10,
   ringRadius = 10,
@@ -37,8 +56,8 @@ const AntigravityInner = ({
   pulseSpeed = 3,
   particleShape = 'capsule',
   fieldStrength = 10
-}: AntigravityProps) => {
-  const meshRef = useRef<any>(null);
+}) => {
+  const meshRef = useRef<THREE.InstancedMesh | null>(null);
   const { viewport } = useThree();
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
@@ -46,17 +65,14 @@ const AntigravityInner = ({
   const lastMouseMoveTime = useRef(0);
   const virtualMouse = useRef({ x: 0, y: 0 });
 
-  const particles = useMemo(() => {
-    const temp = [];
+  const particles: Particle[] = useMemo(() => {
+    const temp: Particle[] = [];
     const width = viewport.width || 100;
     const height = viewport.height || 100;
 
     for (let i = 0; i < count; i++) {
       const t = Math.random() * 100;
       const speed = 0.01 + Math.random() / 200;
-      const xFactor = -50 + Math.random() * 100;
-      const yFactor = -50 + Math.random() * 100;
-      const zFactor = -50 + Math.random() * 100;
 
       const x = (Math.random() - 0.5) * width;
       const y = (Math.random() - 0.5) * height;
@@ -67,9 +83,9 @@ const AntigravityInner = ({
       temp.push({
         t,
         speed,
-        xFactor,
-        yFactor,
-        zFactor,
+        xFactor: 0,
+        yFactor: 0,
+        zFactor: 0,
         mx: x,
         my: y,
         mz: z,
@@ -85,13 +101,16 @@ const AntigravityInner = ({
     return temp;
   }, [count, viewport.width, viewport.height]);
 
-  useFrame(state => {
+  useFrame((state) => {
     const mesh = meshRef.current;
     if (!mesh) return;
 
-    const { viewport: v, pointer: m } = state;
+    const { viewport: v, pointer: m, clock } = state;
 
-    const mouseDist = Math.sqrt(Math.pow(m.x - lastMousePos.current.x, 2) + Math.pow(m.y - lastMousePos.current.y, 2));
+    const mouseDist = Math.sqrt(
+      Math.pow(m.x - lastMousePos.current.x, 2) + 
+      Math.pow(m.y - lastMousePos.current.y, 2)
+    );
 
     if (mouseDist > 0.001) {
       lastMouseMoveTime.current = Date.now();
@@ -102,7 +121,7 @@ const AntigravityInner = ({
     let destY = (m.y * v.height) / 2;
 
     if (autoAnimate && Date.now() - lastMouseMoveTime.current > 2000) {
-      const time = state.clock.getElapsedTime();
+      const time = clock.getElapsedTime();
       destX = Math.sin(time * 0.5) * (v.width / 4);
       destY = Math.cos(time * 0.5 * 2) * (v.height / 4);
     }
@@ -114,7 +133,7 @@ const AntigravityInner = ({
     const targetX = virtualMouse.current.x;
     const targetY = virtualMouse.current.y;
 
-    const globalRotation = state.clock.getElapsedTime() * rotationSpeed;
+    const globalRotation = clock.getElapsedTime() * rotationSpeed;
 
     particles.forEach((particle, i) => {
       let { t, speed, mx, my, mz, cz, randomRadiusOffset } = particle;
@@ -154,7 +173,8 @@ const AntigravityInner = ({
       dummy.rotateX(Math.PI / 2);
 
       const currentDistToMouse = Math.sqrt(
-        Math.pow(particle.cx - projectedTargetX, 2) + Math.pow(particle.cy - projectedTargetY, 2)
+        Math.pow(particle.cx - projectedTargetX, 2) + 
+        Math.pow(particle.cy - projectedTargetY, 2)
       );
 
       const distFromRing = Math.abs(currentDistToMouse - ringRadius);
@@ -173,18 +193,29 @@ const AntigravityInner = ({
     mesh.instanceMatrix.needsUpdate = true;
   });
 
+  const getGeometry = () => {
+    switch(particleShape) {
+      case 'sphere':
+        return <sphereGeometry args={[0.2, 16, 16]} />;
+      case 'box':
+        return <boxGeometry args={[0.3, 0.3, 0.3]} />;
+      case 'tetrahedron':
+        return <tetrahedronGeometry args={[0.3]} />;
+      case 'capsule':
+      default:
+        return <capsuleGeometry args={[0.1, 0.4, 4, 8]} />;
+    }
+  };
+
   return (
     <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
-      {particleShape === 'capsule' && <capsuleGeometry args={[0.1, 0.4, 4, 8]} />}
-      {particleShape === 'sphere' && <sphereGeometry args={[0.2, 16, 16]} />}
-      {particleShape === 'box' && <boxGeometry args={[0.3, 0.3, 0.3]} />}
-      {particleShape === 'tetrahedron' && <tetrahedronGeometry args={[0.3]} />}
+      {getGeometry()}
       <meshBasicMaterial color={color} />
     </instancedMesh>
   );
 };
 
-const Antigravity = (props: AntigravityProps) => {
+const Antigravity: React.FC<AntigravityProps> = (props) => {
   return (
     <Canvas camera={{ position: [0, 0, 50], fov: 35 }}>
       <AntigravityInner {...props} />
