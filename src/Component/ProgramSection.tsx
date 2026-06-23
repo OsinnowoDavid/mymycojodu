@@ -121,7 +121,6 @@ const ProgramsSection: React.FC<ProgramsSectionProps> = ({
           <div className="flex flex-col gap-5">
             <h2 className="text-4xl sm:text-5xl lg:text-[60px] font-medium leading-[120%] text-[#1E1E1E] relative inline-block">
               Our Programs
-              <span className="absolute -bottom-2 left-0 w-20 h-1 bg-[#CB3398] rounded-full" />
             </h2>
             <p className="text-xl sm:text-2xl lg:text-[32px] font-medium leading-[120%] text-[#1E1E1E] opacity-80">
               Lorem ipsum dolor sit amet consectetur. Integer viverra diam mi pellentesque tincidunt eget sed cras.

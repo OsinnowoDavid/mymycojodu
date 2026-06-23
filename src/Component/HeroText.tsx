@@ -1,56 +1,84 @@
 import React from 'react';
+import Antigravity from './Antigravity';
 
 interface HeroSectionProps {
   title?: string;
   subtitle?: string;
   showDecorations?: boolean;
   backgroundColor?: string;
+  backgroundImage?: string;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({
-  title = "Surely the lord is on this place ",
+  title = "Surely the lord is in this place ",
   subtitle = "A place of faith, hope, and love where lives are transformed and purpose is discovered.",
   showDecorations = true,
-  backgroundColor = "transparent"
+  backgroundColor = "transparent",
+  backgroundImage = "https://mfmstorage.blob.core.windows.net/mfmwebsite/images/MFM.jpg"
 }) => {
   return (
     <section 
-      className={`w-full relative px-4 sm:px-6 md:px-8 lg:px-20 py-12 sm:py-16 md:py-20 lg:py-12 xl:py-28`}
+      className={`w-full relative px-4 sm:px-6 md:px-8 lg:px-20 py-12 sm:py-16 md:py-20 overflow-hidden`}
       style={{ backgroundColor }}
     >
+      {/* Background Image */}
+      <img 
+        src={backgroundImage} 
+        alt="Background" 
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      />
+      
+      {/* Dark Overlay for readability */}
+      <div className="absolute inset-0 bg-black/50 z-0"></div>
+
       {/* Decorative elements */}
       {showDecorations && (
-        <>
-        <div>
-            
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <div className="w-full h-full relative">
+            <Antigravity
+              count={250}
+              magnetRadius={10}
+              ringRadius={15}
+              waveSpeed={0.35}
+              waveAmplitude={0.6}
+              particleSize={1.5}
+              lerpSpeed={0.06}
+              color="#CB3398"
+              autoAnimate={true}
+              particleVariance={0.7}
+              rotationSpeed={0.15}
+              depthFactor={0.6}
+              pulseSpeed={3}
+              fieldStrength={15}
+              particleShape="capsule"
+            />
+          </div>
         </div>
-
-        </>
       )}
 
       <div className="max-w-[844px] mx-auto text-center relative z-10">
-        {/* Title with gradient option */}
         <h1 className="
           text-[40px] sm:text-[50px] md:text-[60px] lg:text-[70px] xl:text-[80px] 
-          font-medium leading-[120%] text-[#1E1E1E] 
+          font-medium leading-[120%] text-white 
           mb-4 sm:mb-5 md:mb-6 lg:mb-8
           hover:scale-105 transition-transform duration-300
+          relative
+          drop-shadow-lg
         ">
           {title}
         </h1>
         
-        {/* Subtitle with hover effect */}
         <p className="
           text-base sm:text-lg md:text-xl lg:text-2xl xl:text-[36px] 
           font-normal leading-[120%] sm:leading-[130%] md:leading-[120%]
-          text-black max-w-full
+          text-white max-w-full
           transition-all duration-300
-          hover:text-[#1E1E1E]
+          hover:text-gray-200
+          relative
+          drop-shadow-md
         ">
           {subtitle}
         </p>
-
-     
       </div>
     </section>
   );

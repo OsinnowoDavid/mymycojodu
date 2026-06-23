@@ -201,7 +201,7 @@ const CommunitySection: React.FC<CommunitySectionProps> = ({
                     </p>
 
                     {/* Button */}
-                    <button
+                    <a href='https://wa.me/2347072926162'
                       onClick={() => handleButtonClick(card.id)}
                       className={`
                         w-full max-w-[348px] h-[55px] bg-[#CB3398] text-white rounded-2xl 
@@ -222,7 +222,7 @@ const CommunitySection: React.FC<CommunitySectionProps> = ({
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       </svg>
-                    </button>
+                    </a>
                   </div>
                 </div>
 

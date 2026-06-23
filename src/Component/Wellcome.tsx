@@ -119,7 +119,7 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
               <div className={`mt-4 transition-all duration-700 delay-900 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}>
-                <button className="
+                <a href='https://wa.me/2347072926162'  className="
                   px-8 sm:px-10 md:px-12 py-3 sm:py-4 
                   bg-[#CB3398] text-white 
                   text-base sm:text-lg md:text-xl 
@@ -130,11 +130,11 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
                   focus:outline-none focus:ring-2 focus:ring-[#CB3398] focus:ring-offset-2
                   flex items-center gap-2
                 ">
-                  <span>Visit Us</span>
+                  <span className='text-center'>Visit Us</span>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
-                </button>
+                </a>
               </div>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import logo from "../assets/hero.png"
+import { Link } from 'react-router-dom';
 interface NavItem {
   label: string;
   href: string;
@@ -19,7 +20,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
   navItems = [
     { label: "About", href: "#" },
     { label: "Our Programs", href: "#" },
-    { label: "Giving", href: "#" }
+    { label: "Giving", href: "/giving" }
   ],
   joinButtonText = "Join us",
   onJoinClick
@@ -45,12 +46,15 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
     <nav className="w-full h-[70px] md:h-[100px] lg:h-[130px] bg-white border-b border-[#CB3398] flex items-center justify-between px-4 sm:px-8 md:px-16 lg:px-20 relative">
       {/* Logo */}
       <div className="w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] lg:w-[70px] lg:h-[70px] flex-shrink-0">
+        <Link to="/">
         <img 
           src={logo} 
           alt={logoAlt}
           className="w-full h-full object-contain"
           loading="lazy"
         />
+        </Link>
+
       </div>
 
       {/* Mobile Menu Button */}
@@ -81,14 +85,15 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
       </div>
 
       {/* Join Us Button - Desktop */}
-      <button 
+      <a href='https://wa.me/2347072926162'
+
         className="hidden lg:flex w-[140px] sm:w-[160px] lg:w-[200px] h-[45px] sm:h-[50px] lg:h-[55px] bg-[#CB3398] rounded-2xl hover:bg-[#b02d84] transition-all duration-200 hover:scale-105 items-center justify-center flex-shrink-0 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#CB3398] focus:ring-offset-2"
         onClick={handleJoinClick}
       >
         <span className="text-white text-sm sm:text-base lg:text-[19px] font-medium tracking-wide">
           {joinButtonText}
         </span>
-      </button>
+      </a>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
