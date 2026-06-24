@@ -1,5 +1,4 @@
 import React from 'react';
-import Antigravity from './Antigravity';
 
 interface HeroSectionProps {
   title?: string;
@@ -35,23 +34,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       {showDecorations && (
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div className="w-full h-full relative">
-            <Antigravity
-              count={250}
-              magnetRadius={10}
-              ringRadius={15}
-              waveSpeed={0.35}
-              waveAmplitude={0.6}
-              particleSize={1.5}
-              lerpSpeed={0.06}
-              color="#CB3398"
-              autoAnimate={true}
-              particleVariance={0.7}
-              rotationSpeed={0.15}
-              depthFactor={0.6}
-              pulseSpeed={3}
-              fieldStrength={15}
-              particleShape="capsule"
-            />
+        
           </div>
         </div>
       )}

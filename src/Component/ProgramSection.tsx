@@ -87,12 +87,7 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
           {subtitle}
         </p>
         
-        {/* Learn More button */}
-        <button className={`mt-4 px-6 py-2 bg-[#CB3398] text-white rounded-full text-sm font-medium opacity-0 transform translate-y-4 transition-all duration-300 ${
-          isHovered ? 'opacity-100 translate-y-0' : ''
-        } hover:bg-[#b02d84] hover:scale-105`}>
-          Learn More →
-        </button>
+  
       </div>
 
       {/* Decorative line */}
