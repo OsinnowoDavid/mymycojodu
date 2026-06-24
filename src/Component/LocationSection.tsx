@@ -12,7 +12,7 @@ interface LocationSectionProps {
 
 const LocationSection: React.FC<LocationSectionProps> = ({
   className = '',
-  address = "12, Adebowale Street Ojodu Berger, Lagos State",
+  address =  "2nd Floor, 18 Baale Street, off Adebiwale Street, Grammer School B/S, Ojodu",
   addressLabel = "Our Church Address",
   buttonText = "Join us",
   onButtonClick,

@@ -14,11 +14,11 @@ interface FooterProps {
 const Footer: React.FC<FooterProps> = ({
   className = '',
   companyName = "mfmojoduyc",
-  builtBy = "techdeal.it",
+  builtBy = "techdeal.IT",
   socialLinks = {
-    instagram: "https://instagram.com",
-    youtube: "https://youtube.com",
-    facebook: "https://facebook.com"
+    instagram: "https://www.instagram.com/mfmojoduyc?igsh=Ymptc3NydDVxb2pm",
+    youtube: "https://youtube.com/@mfmojoduyc?si=A1baFEO1VA-0NzEu",
+    facebook: "https://www.facebook.com/share/18xcf1eFcA/"
   }
 }) => {
   const currentYear = new Date().getFullYear();

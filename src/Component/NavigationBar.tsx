@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import logo from "../assets/hero.png"
+import logo from "../assets/Logo.jpg.webp"
 import { Link } from 'react-router-dom';
 interface NavItem {
   label: string;
@@ -19,7 +19,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
 //   logoSrc = logo,
   navItems = [
     { label: "About", href: "#" },
-    { label: "Our Programs", href: "#" },
+    { label: "Our Programs", href: "/#program" },
     { label: "Giving", href: "/giving" }
   ],
   joinButtonText = "Join us",

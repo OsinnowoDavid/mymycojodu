@@ -14,7 +14,7 @@ function Home() {
   <NavigationBar/>
   <HeroSection/>
   <GallerySection/>
-  <ProgramsSection/>
+  <ProgramsSection />
   <LocationSection/>
   <TestimoniesSection/>
   <CommunitySection/>

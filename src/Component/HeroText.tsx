@@ -6,11 +6,13 @@ interface HeroSectionProps {
   showDecorations?: boolean;
   backgroundColor?: string;
   backgroundImage?: string;
+  subtitle2?:string
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({
   title = "Surely the lord is in this place ",
   subtitle = "A place of faith, hope, and love where lives are transformed and purpose is discovered.",
+  subtitle2 ="MFM OJODU YC",
   showDecorations = true,
   backgroundColor = "transparent",
   backgroundImage = "https://mfmstorage.blob.core.windows.net/mfmwebsite/images/MFM.jpg"
@@ -61,6 +63,16 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           drop-shadow-md
         ">
           {subtitle}
+        </p>
+        <p className="
+          text-base sm:text-lg md:text-xl lg:text-2xl xl:text-[36px] 
+     leading-[120%] sm:leading-[130%] md:leading-[120%]
+          text-white max-w-full
+          transition-all duration-300
+          hover:text-gray-200
+          relative
+         font-bold mt-5">
+          {subtitle2}
         </p>
       </div>
     </section>
